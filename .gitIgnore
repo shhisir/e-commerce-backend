@@ -1,0 +1,37 @@
+ # Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Coverage directory
+coverage/
+
+# Build directories
+dist/
+build/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# MongoDB dump files
+dump/
+
+# Optional: ignore uploads or generated files
+uploads/
+*.zip
+*.tar.gz
