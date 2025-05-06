@@ -1,9 +1,28 @@
 
-  const express = require("express")
+ 
   const dotenv = require("dotenv")
   dotenv.config()
-    const app = express()
 
-    app.listen(prototype,() =>{
-        console.log(`server is listening to port ${port}`)
+  const mongoose = require("mongoose")
+  const app = require("./app")
+
+
+    const port = process.env.PORT 
+
+
+    mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log("connected to db")
+    return new Promise((resolve)=>{
+      app.listen(port,() =>{
+        console.log(`server is listing to port ${port}`)
+        resolve()
+      })
+
+    }) .catch((err) =>{
+      console.log(err)
     })
+    })
+   
+
