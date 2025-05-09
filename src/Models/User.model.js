@@ -12,9 +12,7 @@
     role :{
         type : String,
         enum : ["buyer","seller"],
-        validate:(value)=>{
-            return value.tolowercase()
-        }
+        
     },
     password : {
         type : String,

@@ -1,5 +1,3 @@
-
- 
   const dotenv = require("dotenv")
   dotenv.config()
 
@@ -20,8 +18,7 @@
         resolve()
       })
 
-    }) .catch((err) =>{
-      console.log(err)
+        console.log(err)
     })
     })
    
