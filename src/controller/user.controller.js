@@ -13,7 +13,7 @@ const schema = Joi.object({
         .required(),
 
     password: Joi.string()
-        .reqired(),
+        .required(),
 
 
     email: Joi.string()
@@ -51,11 +51,11 @@ const createUser = async (req, res, next) => {
     }
 }
 
-const login = async (req, res, next) => {}
+const login = async (req, res, next) => {
     try{
         const {error,value} = loginSchema.validate(req.body)
     if (!error,value) {
-        let user = await User.findOne({email:value.email})
+        let user = await user.findOne({email:value.email})
         if  (!user){
             return res.status(403).send({message:"Wrong Credential"})
         }
@@ -64,12 +64,8 @@ const login = async (req, res, next) => {}
         return res.status(403).send({message:"Wrong Credential"})
     }
 
-
-    user =  user.toobject()
+    user = {...user.toObject()}
     delete user.password
-
-    // user = { ...user.toObject() };
-    //   delete user.password;
 
 
     let token = jwt.sign(user,process.env.JWT_SECRET)
@@ -80,11 +76,25 @@ const login = async (req, res, next) => {}
 } catch (error) {
         next(error)
     }   
+}
 
+
+const getUser = async() =>{
+    try{
+        const data = await user.find()
+        res.status(201).send(user.reverse())
+
+        
+    }catch(err){
+        next(err)
+    }
+}
 
 
 
 module.exports = {
-    createUser, login
+    createUser,
+    login,
+    getUser
 
 }
