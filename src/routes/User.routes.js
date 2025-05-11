@@ -7,11 +7,11 @@ const router = express.Router()
 
 
 
-router.post("./signup",createUser)
+router.post("/signup",createUser)
 
 
 
-router.post("/".get(getUser))
+router.route("/login",getUser)
  
 
 

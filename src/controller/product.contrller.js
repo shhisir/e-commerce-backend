@@ -31,7 +31,7 @@ const createProduct = async (req, res, next) => {
 }    
 
 const getProduct = async(req,res,next)=>{
-try{const product = await Product.find().populalte("category").populate("createdBy",{password:0})
+try{const product = await Product.find().populate("category").populate("createdBy",{password:0})
 res.status(200).send(product)
 
 } catch(error){

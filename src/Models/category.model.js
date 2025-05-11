@@ -12,5 +12,8 @@
  
  
  const User=mongoose.model("Category",CategorySchema)
- module.exports= Category
+
+
+ 
+ module.exports= CategorySchema
  

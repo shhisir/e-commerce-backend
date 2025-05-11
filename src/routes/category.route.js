@@ -1,5 +1,6 @@
  const express = require("express")
  const { authenticate, isSeller } = require("../middlware/auth")
+const { createCategory } = require("../controller/category.controller")
  
  
  
@@ -8,7 +9,10 @@
  router.route("/").get((req,res)=>{
      resizeBy.send(" all products")
  })
- .post(authenticate,isSeller,createcategory)
+ .post(authenticate,isSeller, createCategory)
+
+
+
  // router.route("/:id").get().delete().patch()
  
  

@@ -18,7 +18,7 @@
         resolve()
       })
 
-        console.log(err)
+     
     })
     })
    

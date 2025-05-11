@@ -1,6 +1,6 @@
 const Auth = require("./User.routes")
 const Product = require("./product.route")
-const Category = require("./category.route")  
+const Category = require("./category.route")
 const express = require("express")
 const router = express.Router()
  
@@ -12,11 +12,11 @@ const defaultRoutes = [
     },
     {
       path :"/product",
-      route:product 
+      route:Product 
   },
   {
     path :"/category",
-    route:this.call 
+    route:Category
 }
   ]
 
