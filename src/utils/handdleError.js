@@ -4,5 +4,7 @@
     res.status(err.status).send(err)
   }
 
-  module.exports ={ 
-  haddleError}
+  module.exports = { 
+  haddleError 
+
+}

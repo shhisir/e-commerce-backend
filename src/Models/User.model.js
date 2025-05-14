@@ -7,8 +7,18 @@
          },
     email :{
             type : String,
-        required : true
+        required : true,
+        unique: true,
+            validate: {
+      validator: async (value) => {
+        let matched = await mongoose.models.User.findOne({ email: value });
+        if (matched) {
+          return false;
+        }
+      },
+      message: "email already used",
     },
+  },
     role :{
         type : String,
         enum : ["buyer","seller"],

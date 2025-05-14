@@ -1,8 +1,9 @@
 const Joi = require('joi')
 const user = require("../Models/User.model")    
-const bcryptjs = require("bcryptjs")
+const bcrypt = require("bcryptjs")
 const dotenv = require("dotenv")
 const jwt = require("jsonwebtoken")
+const User = require('../Models/User.model')
 dotenv.config()
 
 
@@ -43,7 +44,7 @@ const createUser = async (req, res, next) => {
       const salt = await bcrypt.genSalt(10)
       const hashedpassword = await bcrypt.hash(password, salt)
 
-      const user = await user.create({ ...value, password: hashedpassword })
+      const user = await User.create({ ...value, password: hashedpassword })
       res.status(201).send("sighned successfully")
     } catch (error){
         next (error)
@@ -55,7 +56,7 @@ const login = async (req, res, next) => {
     try{
         const {error,value} = loginSchema.validate(req.body)
     if (!error,value) {
-        let user = await user.findOne({email:value.email})
+        let user = await User.findOne({email:value.email})
         if  (!user){
             return res.status(403).send({message:"Wrong Credential"})
         }
@@ -79,10 +80,10 @@ const login = async (req, res, next) => {
 }
 
 
-const getUser = async() =>{
+const getUser = async(req,res,next) =>{
     try{
-        const data = await user.find()
-        res.status(201).send(user.reverse())
+        const data = await User.find({},{password:0})
+        res.status(201).send(data.reverse())
 
         
     }catch(err){

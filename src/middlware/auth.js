@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const {SELLER} = require("../constants")
+const {SELLER ,BUYER} = require("../constants")
 
 const authenticate = (req, res, next) => {
     const token = req.header.Authorization.split(" ")[1]
@@ -24,7 +24,7 @@ if (req.user.role == SELLER)
 }
 
 
-const isbuyer=(req,res,next)=>{
+const isBuyer=(req,res,next)=>{
     if (req.user.role == BUYER)  {
         next()
     } else{
@@ -38,5 +38,8 @@ const isbuyer=(req,res,next)=>{
 module.exports ={ 
     authenticate,
     isSeller,
-    isbuyer
+    isBuyer
 }
+
+
+

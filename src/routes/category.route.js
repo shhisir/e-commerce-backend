@@ -6,7 +6,7 @@ const { createCategory } = require("../controller/category.controller")
  
  
  const router = express.Router()
- router.route("/").get((req,res)=>{
+ router.route("/category").get((req,res)=>{
      resizeBy.send(" all products")
  })
  .post(authenticate,isSeller, createCategory)
