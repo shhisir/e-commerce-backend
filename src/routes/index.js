@@ -22,9 +22,8 @@ const defaultRoutes = [
 },
  { path:"/order",
   route : Order
-
 }
-  ]
+]
 
   defaultRoutes.map((el)=>{
     router.use(el.path,el.route)

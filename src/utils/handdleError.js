@@ -1,10 +1,19 @@
+  const { model } = require("mongoose")
+  
   const haddleError = (err,req,res,next) => {
-    console.log("this is error",err)
+    console.log(err.errors)
+    if (err.name == "Validator Error"){
 
-    res.status(err.status).send(err)
+    }
+    res.send(400).send(
+
+    )
+   
   }
 
   module.exports = { 
   haddleError 
 
 }
+
+ 
