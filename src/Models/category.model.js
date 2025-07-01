@@ -1,19 +1,16 @@
- const mongoose=require("mongoose")   
- const CategorySchema=mongoose.Schema({
-     tittle:{
-         type:String,
-         require:true
-     }
- },{
-     timeStamp:true
-    }
- 
- )
- 
- 
- const User=mongoose.model("Category",CategorySchema)
+const mongoose = require("mongoose");
 
+const categorySchema = mongoose.Schema(
+  {
+    title: {
+      type: String,
+      require: true,
+    },
+  },
+  {
+    timeStamp: true,
+  }
+);
 
- 
- module.exports= CategorySchema
- 
+const Category = mongoose.model("Category", categorySchema);
+module.exports = Category;

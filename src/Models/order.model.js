@@ -1,30 +1,29 @@
-  const mongoose=require("mongoose")
-  
-  const Schema =mongoose.Schema
-  const ObjectId=Schema.Types.ObjectId    
-  const orderSchema=mongoose.Schema({
-      product:{
-          type:String,
-          require:true
-      },
+const { required } = require("joi");
+const mongoose = require("mongoose");
 
-      quantity:{
-          type:String,
-          required:true
-      },
-      orderby:{
-          type:String,
-         }
-  },{                                                                                                                                                                                                                                              
-      timeStamp:true
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+const orderSchema = mongoose.Schema(
+  {
+    product: {
+      type: ObjectId,
+      require: true,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    OrderedBy: {
+      type: ObjectId,
+      ref: "User",
+    },
+  },
+  {
+    timeStamps: true,
   }
-  
-  )
-  
-  
-  const Order=mongoose.model("Order",orderSchema)
-  
-  
-  
-  module.exports =  Order
-  
+);
+
+const Order = mongoose.model("Order", orderSchema);
+
+module.exports = Order;

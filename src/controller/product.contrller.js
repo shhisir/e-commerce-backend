@@ -1,21 +1,33 @@
 const Joi = require("joi");
-const Product = require("../Models/product.model");
+const Category = require("../model/category.model");
+const Product = require("../model/product.model");
+const mongoose= require("mongoose");
+const {deleteImage} = require("../utils/deleteImage");
+const path = require("path");
 
 const productSchema = Joi.object({
-  name: Joi.string().required(),
+  productName: Joi.string().required(),
   price: Joi.string().required(),
   description: Joi.string().required(),
   category: Joi.string(),
   createdBy: Joi.string(),
-  image: Joi.string().required,
+  image: Joi.string().required(),
 });
-
-const getProduct = async (req, res, next) => {
+const updateSchema = Joi.object({
+  productName: Joi.string(),
+  price: Joi.string(),
+  description: Joi.string(),
+  category: Joi.string(),
+  createdBy: Joi.string(),
+  image: Joi.string(),
+});
+const getProducts = async (req, res, next) => {
   try {
-    let priceFrom = parseFloat(req.querry.priceFrom) || 0;
-    let priceto = parseFloat(req.querry.priceto) || 999999;
-    let perPage = parseInt(req.querry.perPage) || 5;
-    let page = parseInt(req.querry.page);
+    let sort = req.query.sort || "dateDesc";
+    let priceFrom = parseFloat(req.query.priceFrom) || 0;
+    let priceTo = parseFloat(req.query.priceTo) || 9999999999;
+    let perPage = parseInt(req.query.perPage) || 5;
+    let page = parseInt(req.query.page) || 1;
 
     let sortBy = {
       createdAt: -1,
@@ -36,7 +48,7 @@ const getProduct = async (req, res, next) => {
 
       $and: [{ price: { $gte: priceFrom } }, { price: { $lte: priceTo } }],
     };
-    const product = await Product.find(productFilter)
+    const product = await Product.find()
       .populate("category")
       .sort(sortBy)
       .skip((page - 1) * perPage)
@@ -49,25 +61,96 @@ const getProduct = async (req, res, next) => {
 };
 
 const createProduct = async (req, res, next) => {
-  if (req.file) {
-    req.body.image = req.file.path;
-  }
-  try {
-    const { error, value } = productSchema.validate(req.body, {
-      allowUnknown: true,
-    });
-    if (!error) {
-      const product = await Product.create(value);
-      res.status(201).send({ message: "product created   sucessfully" });
-    } else {
-      throw error;
+ 
+console.log(req.files);
+  if (req.files) {
+req.body.image = [];
+req.files.map((el, index) => {
+let imagePath = path
+.join("/", "../../uploads", `${el.filename}`)
+.replaceAll("\\", "/");
+
+req.body.image[index] = imagePath;
+});
+    try {
+
+      const { error, value } = productSchema.validate(req.body, {
+        allowUnknown: true,
+      });
+
+      if (!error) {
+        await Product.create(value);
+        res.status(200).send({ message: "Product created sucessfully" });
+      }
+       else {
+       
+        throw error;
+      }
+    } catch (err) {
+      
+       
+      req.files.map((el)=>{
+        deleteImage(el.filename)
+      })
+      next(err);
     }
-  } catch (error) {
-    next(error);
   }
-};
+}
+
+const getSingleProduct= async (req,res,next)=>
+{
+
+  try{
+    const product_id=req.params.id
+   
+    const id= new mongoose.Types.ObjectId(product_id)
+    const productDetails=await Product.findById(id)
+    res.status(200).send(productDetails)
+  }catch(err){
+    next(err)
+  }
+}
+const deleteProduct=async (req,res,next)=>
+{
+  try{
+    const product_id=req.params.id
+    const id= new mongoose.Types.ObjectId(product_id)
+    const productDetails=await Product.findByIdAndDelete(id)
+    res.status(200).send({message:"Product deleted successfully"})
+  }catch(err){
+    next(err)
+  }
+}
+const updateProduct= async(req,res,next)=>{
+ 
+  try{
+      const product_id=req.params.id
+      const id= new mongoose.Types.ObjectId(product_id)
+    
+      const {error,value}= updateSchema.validate(req.body,{
+        allowUnknown:true,
+      })
+      if(!error)
+      {
+        const updatePro= await Product.findByIdAndUpdate(id,value)
+        console.log(updatePro)
+        res.status(200).send(updatePro)
+        
+      }
+      else{
+        console.log(error)
+      }
+  }catch(err)
+  {
+    next(err)
+  }
+}
 
 module.exports = {
   createProduct,
-  getProduct,
+  getProducts,
+  getSingleProduct,
+  deleteProduct,
+  updateProduct,
+
 };

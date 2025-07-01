@@ -1,32 +1,33 @@
-const Auth = require("./User.routes")
-const Product = require("./product.route")
-const Category = require("./category.route")
-const express = require("express")
-const { required } = require("joi")
-const Order = require("./order.route")
-const router = express.Router()
- 
-
-const defaultRoutes = [
+const  express = require('express')
+const Auth = require('./user.route')
+const router=express.Router()
+const Product = require('./product.route')
+const Order = require('./order.route')
+const Category = require('./category.route')
+const defaultRoutes=[
     {
-        path :"/user",
-        route:Auth 
+        path:"/user",
+        route:Auth
     },
     {
-      path :"/product",
-      route:Product 
-  },
-  {
-    path :"/category",
-    route:Category
-},
- { path:"/order",
-  route : Order
-}
+        path:"/product",
+        route:Product
+    },
+    {
+        path:"/order",
+        route:Order
+    },
+    {
+        path:"/category",
+        route:Category
+    },
+    
+
+
 ]
 
-  defaultRoutes.map((el)=>{
+defaultRoutes.map((el)=>{
     router.use(el.path,el.route)
-  })
+})
 
-  module.exports = router   
+module.exports=router
