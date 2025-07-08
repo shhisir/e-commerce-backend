@@ -90,12 +90,18 @@ const getUser = async(req,res,next) =>{
         next(err)
     }
 }
+const getOwnInfo =(req,res)=>{
+    res.send(res.user)
+
+}
 
 
 
 module.exports = {
     createUser,
     login,
-    getUser
+    getUser,
+    getOwnInfo
+
 
 }
