@@ -1,5 +1,5 @@
 const  express = require('express')
-const Auth = require('./user.route')
+const Auth = require('./User.routes')
 const router=express.Router()
 const Product = require('./product.route')
 const Order = require('./order.route')

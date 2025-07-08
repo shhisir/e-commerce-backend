@@ -1,8 +1,8 @@
 const Joi = require("joi");
-const Category = require("../model/category.model");
-const Product = require("../model/product.model");
+const Category = require("../Models/category.model");
+const Product = require("../Models/product.model");
 const mongoose= require("mongoose");
-const {deleteImage} = require("../utils/deleteImage");
+
 const path = require("path");
 
 const productSchema = Joi.object({
@@ -90,7 +90,7 @@ req.body.image[index] = imagePath;
       
        
       req.files.map((el)=>{
-        deleteImage(el.filename)
+        // deleteImage(el.filename)
       })
       next(err);
     }
