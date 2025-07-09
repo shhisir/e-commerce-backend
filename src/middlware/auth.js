@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const {SELLER ,BUYER} = require("../constants")
 
 const authenticate = (req, res, next) => {
-    const token = req.header.Authorization.split(" ")[1]
+    const token = req.header?.Authorization?.split(" ")[1] || null
  
     if (!token) {
         return res.status(401).send({ message: "please authenticate" })
