@@ -13,8 +13,8 @@ router.post("/signup",createUser)
 
 
 router.post("/login",login)
-router.get("/me").get(authenticate,getOwnInfo)
-
+router.get("/me",authenticate,getOwnInfo)
+,
 
 // router.route("user/:id").delete().patch()
 
