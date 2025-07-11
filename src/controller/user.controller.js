@@ -28,6 +28,7 @@ const schema = Joi.object({
 
 
 const createUser = async (req, res, next) => {
+    
     try {
       const data = req.body;
       const { error, value } = schema.validate(data, {
@@ -43,8 +44,8 @@ const createUser = async (req, res, next) => {
 
       const salt = await bcrypt.genSalt(10)
       const hashedpassword = await bcrypt.hash(password, salt)
-
       const user = await User.create({ ...value, password: hashedpassword })
+      
       res.status(201).send("sighned successfully")
     } catch (error){
         next (error)
@@ -55,6 +56,8 @@ const createUser = async (req, res, next) => {
 const login = async (req, res, next) => {
     try{
         const {error,value} = loginSchema.validate(req.body)
+       
+      
     if (!error,value) {
         let user = await User.findOne({email:value.email})
         if  (!user){
@@ -64,6 +67,7 @@ const login = async (req, res, next) => {
    if (!check) {
         return res.status(403).send({message:"Wrong Credential"})
     }
+    console.log(user)
 
     user = {...user.toObject()}
     delete user.password

@@ -1,12 +1,13 @@
 const Joi = require("joi");
 const Category = require("../Models/category.model");
 const Product = require("../Models/product.model");
-const mongoose= require("mongoose");
+const mongoose = require("mongoose");
 
 const path = require("path");
 
 const productSchema = Joi.object({
   productName: Joi.string().required(),
+
   price: Joi.string().required(),
   description: Joi.string().required(),
   category: Joi.string(),
@@ -61,19 +62,17 @@ const getProducts = async (req, res, next) => {
 };
 
 const createProduct = async (req, res, next) => {
- 
-console.log(req.files);
+  console.log(req.files);
   if (req.files) {
-req.body.image = [];
-req.files.map((el, index) => {
-let imagePath = path
-.join("/", "../../uploads", `${el.filename}`)
-.replaceAll("\\", "/");
+    req.body.image = [];
+    req.files.map((el, index) => {
+      let imagePath = path
+        .join("/", "../../uploads", `${el.filename}`)
+        .replaceAll("\\", "/");
 
-req.body.image[index] = imagePath;
-});
+      req.body.image[index] = imagePath;
+    });
     try {
-
       const { error, value } = productSchema.validate(req.body, {
         allowUnknown: true,
       });
@@ -81,70 +80,58 @@ req.body.image[index] = imagePath;
       if (!error) {
         await Product.create(value);
         res.status(200).send({ message: "Product created sucessfully" });
-      }
-       else {
-       
+      } else {
         throw error;
       }
     } catch (err) {
-      
-       
-      req.files.map((el)=>{
+      req.files.map((el) => {
         // deleteImage(el.filename)
-      })
+      });
       next(err);
     }
   }
-}
+};
 
-const getSingleProduct= async (req,res,next)=>
-{
+const getSingleProduct = async (req, res, next) => {
+  try {
+    const product_id = req.params.id;
 
-  try{
-    const product_id=req.params.id
-   
-    const id= new mongoose.Types.ObjectId(product_id)
-    const productDetails=await Product.findById(id)
-    res.status(200).send(productDetails)
-  }catch(err){
-    next(err)
+    const id = new mongoose.Types.ObjectId(product_id);
+    const productDetails = await Product.findById(id);
+    res.status(200).send(productDetails);
+  } catch (err) {
+    next(err);
   }
-}
-const deleteProduct=async (req,res,next)=>
-{
-  try{
-    const product_id=req.params.id
-    const id= new mongoose.Types.ObjectId(product_id)
-    const productDetails=await Product.findByIdAndDelete(id)
-    res.status(200).send({message:"Product deleted successfully"})
-  }catch(err){
-    next(err)
+};
+const deleteProduct = async (req, res, next) => {
+  try {
+    const product_id = req.params.id;
+    const id = new mongoose.Types.ObjectId(product_id);
+    const productDetails = await Product.findByIdAndDelete(id);
+    res.status(200).send({ message: "Product deleted successfully" });
+  } catch (err) {
+    next(err);
   }
-}
-const updateProduct= async(req,res,next)=>{
- 
-  try{
-      const product_id=req.params.id
-      const id= new mongoose.Types.ObjectId(product_id)
-    
-      const {error,value}= updateSchema.validate(req.body,{
-        allowUnknown:true,
-      })
-      if(!error)
-      {
-        const updatePro= await Product.findByIdAndUpdate(id,value)
-        console.log(updatePro)
-        res.status(200).send(updatePro)
-        
-      }
-      else{
-        console.log(error)
-      }
-  }catch(err)
-  {
-    next(err)
+};
+const updateProduct = async (req, res, next) => {
+  try {
+    const product_id = req.params.id;
+    const id = new mongoose.Types.ObjectId(product_id);
+
+    const { error, value } = updateSchema.validate(req.body, {
+      allowUnknown: true,
+    });
+    if (!error) {
+      const updatePro = await Product.findByIdAndUpdate(id, value);
+      console.log(updatePro);
+      res.status(200).send(updatePro);
+    } else {
+      console.log(error);
+    }
+  } catch (err) {
+    next(err);
   }
-}
+};
 
 module.exports = {
   createProduct,
@@ -152,5 +139,4 @@ module.exports = {
   getSingleProduct,
   deleteProduct,
   updateProduct,
-
 };

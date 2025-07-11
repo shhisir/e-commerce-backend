@@ -1,22 +1,43 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
-const { ref } = require("process");
-const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new mongoose.Schema(
   {
-    product: {
-      type: ObjectId,
-      ref: "Product",
+    username: {
+      type: String,
+      require: true,
     },
-    reviewedBy: {
-      type: ObjectId,
-      ref: "User",
+
+    email: {
+      type: String,
+      require: true,
+
+      validate: {
+        validator: async (value) => {
+          let matached = await mongoose.models.User.findOne({ email: value });
+          if (matached) {
+            return false;
+          }
+        },
+        message: "email already used ",
+      },
+    },
+
+    role: {
+      type: String,
+      enum: ["buyer", "seller"],
+    },
+
+    password: {
+      type: String,
+      required: true,
     },
   },
+
   {
     timestamps: true,
   }
 );
 
 const User = mongoose.model("User", userSchema);
-module.exports = userSchema;
+module.exports = User;
