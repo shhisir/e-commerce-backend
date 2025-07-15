@@ -67,14 +67,14 @@ const login = async (req, res, next) => {
    if (!check) {
         return res.status(403).send({message:"Wrong Credential"})
     }
-    console.log(user)
+ 
 
     user = {...user.toObject()}
     delete user.password
 
 
     let token = jwt.sign(user,process.env.JWT_SECRET)
-    console.log(token)
+    
     res.status(200).send({token})
     }
 

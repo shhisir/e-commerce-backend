@@ -12,7 +12,7 @@ router.post("/signup",createUser)
 
 
 
-// router.post("/login",login)
+router.post("/login",login)
 // router.get("/me",authenticate,getOwnInfo)
 // ,
 
