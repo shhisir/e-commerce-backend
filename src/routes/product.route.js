@@ -2,11 +2,13 @@ const express = require("express");
 const { authenticate, isSeller } = require("../middlware/auth");
 const {
   createProduct,
-  getProduct,
+  getProducts,
 } = require("../controller/product.contrller");
 
 const router = express.Router();
 
-router.post("/product", authenticate, isSeller, createProduct);
+router.post("/", authenticate, isSeller, createProduct);
+router.get("/", getProducts);
+
 
 module.exports = router;
