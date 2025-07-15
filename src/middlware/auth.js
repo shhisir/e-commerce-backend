@@ -2,14 +2,16 @@ const jwt = require("jsonwebtoken")
 const {SELLER ,BUYER} = require("../constants")
 
 const authenticate = (req, res, next) => {
-    const token = req.header?.Authorization?.split(" ")[1] || null
- 
+    const token = req.headers?.authorization?.split(" ")[1] || null
+
+    
+
     if (!token) {
         return res.status(401).send({ message: "please authenticate" })
     }
 
-    const user = token.verify(token, process.env.JWT_SECRET)
-    res.user = user
+    const user = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = user
     
     next()
 }

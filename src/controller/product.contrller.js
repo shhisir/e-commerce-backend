@@ -62,20 +62,14 @@ const getProducts = async (req, res, next) => {
 };
 
 const createProduct = async (req, res, next) => {
-  console.log(req.files);
-  if (req.files) {
-    req.body.image = [];
-    req.files.map((el, index) => {
-      let imagePath = path
-        .join("/", "../../uploads", `${el.filename}`)
-        .replaceAll("\\", "/");
+ 
 
-      req.body.image[index] = imagePath;
-    });
     try {
       const { error, value } = productSchema.validate(req.body, {
         allowUnknown: true,
       });
+
+      console.log(value)
 
       if (!error) {
         await Product.create(value);
@@ -84,13 +78,13 @@ const createProduct = async (req, res, next) => {
         throw error;
       }
     } catch (err) {
-      req.files.map((el) => {
-        // deleteImage(el.filename)
-      });
+      // req.files.map((el) => {
+      //   deleteImage(el.filename)
+      // });
       next(err);
     }
   }
-};
+
 
 const getSingleProduct = async (req, res, next) => {
   try {
