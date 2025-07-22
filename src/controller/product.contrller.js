@@ -19,7 +19,7 @@ const updateSchema = Joi.object({
   price: Joi.string(),
   description: Joi.string(),
   category: Joi.string(),
-  createdBy: Joi.string(),
+  createdBy: Joi.string().required(),
   image: Joi.string(),
 });
 const getProducts = async (req, res, next) => {
@@ -65,6 +65,7 @@ const createProduct = async (req, res, next) => {
  
 
     try {
+      req.body.createdBy = new mongoose.Types.ObjectId(req.user.product_id)
       const { error, value } = productSchema.validate(req.body, {
         allowUnknown: true,
       });
