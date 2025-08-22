@@ -37,7 +37,7 @@ const getCategories = async(req,res)=>{
         next (error)
     }
 }
-
+ 
 
 module.exports = {
     createCategory,
